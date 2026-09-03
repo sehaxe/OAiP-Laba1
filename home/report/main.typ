@@ -1,7 +1,6 @@
 // Отчёт по лабораторной работе №1 по ОАиП (БГУИР, вариант 5).
 // Листинги читаются напрямую из файлов ../1/main.c .. ../4/main.c,
 // блок-схемы подключаются из flowcharts.typ, скриншоты — из assets/.
-#import "flowcharts.typ": flow1, flow2, flow3, flow4
 
 #set document(
   title: "Отчёт по лабораторной работе №1 по ОАиП",
@@ -28,15 +27,14 @@
   v(4pt)
 }
 
-#show raw.where(block: true): it => block(
+#let listing(path) = block(
   width: 100%,
   fill: rgb("#f6f6f2"),
   stroke: 0.5pt + rgb("#cccccc"),
   inset: 9pt,
   radius: 2pt,
-  text(font: ("DejaVu Sans Mono", "Noto Sans CJK TC"), size: 8pt, it),
+  text(font: ("DejaVu Sans Mono", "Noto Sans CJK TC"), size: 8pt, raw(read(path), lang: "c")),
 )
-#set raw(tab-size: 4)
 
 #set figure(supplement: [Рисунок], numbering: "1")
 #set figure.caption(separator: [ — ])
@@ -100,11 +98,11 @@
 
 *Ход решения.* Программа вводит два катета и проверяет корректность ввода: функция scanf должна успешно прочитать ровно два значения, а оба катета должны быть положительными числами. Гипотенуза вычисляется по теореме Пифагора с помощью функции sqrt из математической библиотеки, а площадь вычисляется как половина произведения катетов. Оба результата выводятся с точностью до двух знаков после запятой спецификатором %.2f. При некорректном вводе программа сообщает об ошибке и завершается с кодом возврата 1.
 
-#block(breakable: false)[*Листинг программы:* #v(4pt) #raw(read("../1/main.c"), lang: "c")]
+#block(breakable: false)[*Листинг программы:* #v(4pt) #listing("../1/main.c")]
 
 #block(breakable: false)[*Результаты выполнения программы:* #v(4pt) #figure(image("assets/term_task1.png", width: 100%), caption: [Результаты выполнения задания № 1])]
 
-#block(breakable: false)[*Блок-схема программы:* #v(4pt) #figure(align(center, flow1), caption: [Блок-схема программы к заданию № 1])]
+#block(breakable: false)[*Блок-схема программы:* #v(4pt) #figure(image("assets/task1.png", width: 152mm), caption: [Блок-схема программы к заданию № 1])]
 
 #pagebreak()
 
@@ -114,11 +112,11 @@
 
 *Ход решения.* Номер билета вводится как целое число; проверяется, что оно шестизначное (от 100000 до 999999). Первые три цифры извлекаются целочисленным делением с остатком: a / 100000 даёт первую цифру, выражения вида a / 10 % 10 последовательно выделяют остальные. Суммы первых трёх и последних трёх цифр сравниваются: при равенстве билет счастливый.
 
-#block(breakable: false)[*Листинг программы:* #v(4pt) #raw(read("../2/main.c"), lang: "c")]
+#block(breakable: false)[*Листинг программы:* #v(4pt) #listing("../2/main.c")]
 
 #block(breakable: false)[*Результаты выполнения программы:* #v(4pt) #figure(image("assets/term_task2.png", width: 95%), caption: [Результаты выполнения задания № 2])]
 
-#block(breakable: false)[*Блок-схема программы:* #v(4pt) #figure(align(center, flow2), caption: [Блок-схема программы к заданию № 2])]
+#block(breakable: false)[*Блок-схема программы:* #v(4pt) #figure(image("assets/task2.png", width: 152mm), caption: [Блок-схема программы к заданию № 2])]
 
 #pagebreak()
 
@@ -128,11 +126,11 @@
 
 *Ход решения.* Для каждого из трёх чисел проверяется условие fmodf(x, 1) == 0: функция fmodf возвращает остаток от деления числа на 1, то есть его дробную часть. Если остаток равен нулю, число целое, и программа выводит соответствующее сообщение. Проверки выполняются тремя независимыми операторами if, поэтому программа отчитывается о каждом целом числе. Если же целых не оказалось ни одного, срабатывает четвёртая проверка с условием «все три числа не целые», связанным логической операцией И.
 
-#block(breakable: false)[*Листинг программы:* #v(4pt) #raw(read("../3/main.c"), lang: "c")]
+#block(breakable: false)[*Листинг программы:* #v(4pt) #listing("../3/main.c")]
 
 #block(breakable: false)[*Результаты выполнения программы:* #v(4pt) #figure(image("assets/term_task3.png", width: 95%), caption: [Результаты выполнения задания № 3])]
 
-#block(breakable: false)[*Блок-схема программы:* #v(4pt) #figure(align(center, flow3), caption: [Блок-схема программы к заданию № 3])]
+#block(breakable: false)[*Блок-схема программы:* #v(4pt) #figure(image("assets/task3.png", width: 152mm), caption: [Блок-схема программы к заданию № 3])]
 
 #pagebreak()
 
@@ -142,8 +140,8 @@
 
 *Ход решения.* Программа выводит меню из четырёх времён года и читает их номер. Введённое значение проверяется на корректность (от 1 до 4), после чего оператор switch выбирает нужный вариант: каждый case выводит перечень месяцев сезона и завершается оператором break. Введённое значение вне диапазона 1..4 отклоняется сообщением об ошибке.
 
-#block(breakable: false)[*Листинг программы:* #v(4pt) #raw(read("../4/main.c"), lang: "c")]
+#block(breakable: false)[*Листинг программы:* #v(4pt) #listing("../4/main.c")]
 
 #block(breakable: false)[*Результаты выполнения программы:* #v(4pt) #figure(image("assets/term_task4.png", width: 95%), caption: [Результаты выполнения задания № 4])]
 
-#block(breakable: false)[*Блок-схема программы:* #v(4pt) #figure(align(center, flow4), caption: [Блок-схема программы к заданию № 4])]
+#block(breakable: false)[*Блок-схема программы:* #v(4pt) #figure(image("assets/task4.png", width: 152mm), caption: [Блок-схема программы к заданию № 4])]
