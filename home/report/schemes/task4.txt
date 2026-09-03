@@ -1,9 +1,0 @@
-ввод scanf("%d", &status)
-если status <= 0 || status >= 5
-    да: printf("ТЫ НЕ ПРОЙДЕШЬ!!!!"); return 1 -> конец
-если switch (status)
-    1: printf("Декабрь...")
-    2: printf("Март...")
-    3: printf("Июнь...")
-    4: printf("Сентябрь...")
-    иначе: printf("Как ты сюда попал...")
