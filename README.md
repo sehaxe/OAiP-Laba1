@@ -61,8 +61,8 @@ python gostpadi.py схема.gvn
 схемы, если захочется поправить:
 
 ```bash
-gostpadi 1/main.c --labels=ru --show     # картинка сразу в терминал
-gostpadi 1/main.c --labels=ru --gvn      # вывести текст схемы (.gvn)
+gostpadi 1/main.c --show     # картинка сразу в терминал
+gostpadi 1/main.c --gvn      # вывести текст схемы (.gvn)
 ```
 
 Подробности формата и все опции — в README репозитория gostpadi.

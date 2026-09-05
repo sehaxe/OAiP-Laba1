@@ -25,7 +25,7 @@ GOSTPADI := uv run --with matplotlib $(HOME)/gostpadi/gostpadi.py
 
 .PHONY: schemes
 schemes:
-	$(GOSTPADI) 1/main.c --labels=ru -o 1/scheme.png
-	$(GOSTPADI) 2/main.c --labels=ru -o 2/scheme.png
-	$(GOSTPADI) 3/main.c --labels=ru -o 3/scheme.png
-	$(GOSTPADI) 4/main.c --labels=ru -o 4/scheme.png
+	$(GOSTPADI) 1/main.c -o 1/scheme.png
+	$(GOSTPADI) 2/main.c -o 2/scheme.png
+	$(GOSTPADI) 3/main.c -o 3/scheme.png
+	$(GOSTPADI) 4/main.c -o 4/scheme.png
