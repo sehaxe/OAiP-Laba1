@@ -21,10 +21,10 @@ clean:
 
 # Блок-схемы: gostpadi (pip install gostpadi) рисует их прямо из main.c
 # в папки заданий; отчёт подключает их как ../N/scheme.png.
-# Быстрый просмотр одной схемы: gostpadi 1/main.c --show
+# Быстрый просмотр одной схемы: gostpadi --labels=ru 1/main.c --show
 .PHONY: schemes
 schemes:
-	gostpadi 1/main.c -o 1/scheme.png --scale=3 --lw=1.5
-	gostpadi 2/main.c -o 2/scheme.png --scale=3 --lw=1.5
-	gostpadi 3/main.c -o 3/scheme.png --scale=3 --lw=1.5
-	gostpadi 4/main.c -o 4/scheme.png --scale=3 --lw=1.5
+	gostpadi --labels=ru 1/main.c -o 1/scheme.png --scale=3 --lw=1.5
+	gostpadi --labels=ru 2/main.c -o 2/scheme.png --scale=3 --lw=1.5
+	gostpadi --labels=ru 3/main.c -o 3/scheme.png --scale=3 --lw=1.5
+	gostpadi --labels=ru 4/main.c -o 4/scheme.png --scale=3 --lw=1.5
