@@ -19,13 +19,12 @@ report:
 clean:
 	rm -f 1/main 2/main 3/main 4/main
 
-# Блок-схемы: gostpadi (https://github.com/sehaxe/gostpadi)
-# генерируются прямо из main.c
-GOSTPADI := uv run --with matplotlib $(HOME)/gostpadi/gostpadi.py
-
+# Блок-схемы: gostpadi (pip install gostpadi) рисует их прямо из main.c
+# в папки заданий; отчёт подключает их как ../N/scheme.png.
+# Быстрый просмотр одной схемы: gostpadi 1/main.c --show
 .PHONY: schemes
 schemes:
-	$(GOSTPADI) 1/main.c -o 1/scheme.png
-	$(GOSTPADI) 2/main.c -o 2/scheme.png
-	$(GOSTPADI) 3/main.c -o 3/scheme.png
-	$(GOSTPADI) 4/main.c -o 4/scheme.png
+	gostpadi 1/main.c -o 1/scheme.png --scale=3 --lw=1.5
+	gostpadi 2/main.c -o 2/scheme.png --scale=3 --lw=1.5
+	gostpadi 3/main.c -o 3/scheme.png --scale=3 --lw=1.5
+	gostpadi 4/main.c -o 4/scheme.png --scale=3 --lw=1.5

@@ -2,7 +2,7 @@
 
 //Задача 4. Вариант 5
 
-int main(void){
+int main(void) {
 
     int status;
 
