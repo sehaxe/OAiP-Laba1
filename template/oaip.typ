@@ -216,7 +216,7 @@
     pad(x: 3em, top: 1em, bottom: 0.4em)[
       #align(center)[
         #heading(level: 1, outlined: false, numbering: none,
-          text(0.85em, smallcaps[Цель работы]))
+          text(0.85em, upper[Цель работы]))
       ]
       #set par(justify: true, first-line-indent: 0mm, spacing: 0em)
       #goal
