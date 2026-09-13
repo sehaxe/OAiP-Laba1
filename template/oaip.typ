@@ -177,11 +177,6 @@
   let _first-section = state("oaip-first-section", true)
   show heading: it => {
     set text(weight: "bold", hyphenate: false)
-    if it.level == 1 and it.numbering != none {
-      context {
-        if _first-section.get() { _first-section.update(false) } else { pagebreak(weak: true) }
-      }
-    }
     let head = if it.numbering == none or it.level == 1 { upper(it.body) } else { it.body }
     if it.numbering == none {
       // ненумерованный раздел — по центру без абзацного отступа (п. 2.1.1)
@@ -238,7 +233,7 @@
   caption: caption,
   {
     set align(left) // figure центрирует содержимое по умолчанию — коду нужен левый край
-    set text(font: _mono, size: 0.85em)
+    set text(font: _mono, size: 0.8em)
     set par(justify: false, leading: 0.62em, spacing: 0.62em, first-line-indent: 0mm)
     set raw(align: left, tab-size: 4)
     show raw.line: it => if line-numbers {
