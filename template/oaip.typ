@@ -208,6 +208,9 @@
   show figure: set par(justify: false, first-line-indent: 0mm)
   // картинка не разрывается между страницами и не отрывается от подписи
   show figure: set block(breakable: false)
+  // листинги кода продолжаются на следующей странице — как принято
+  // в отчётах; иначе длинный код оставляет полстраницы пустоты
+  show figure.where(kind: "listing"): set block(breakable: true)
   show figure: set block(above: 18pt, below: 18pt)
   show figure.where(kind: table): set figure.caption(position: top)
   show figure.where(kind: table): set align(left)
@@ -226,14 +229,14 @@
 // Листинг: моноширинный Courier с номерами строк, подпись
 // «Листинг N – …» снизу (рамки СТП не предусматривает).
 // source — строка с кодом (например, read("../1/main.c")).
-#let listing(source, caption: none, lang: "c", line-numbers: true) = figure(
+#let listing(source, caption: none, lang: "c", line-numbers: true, size: 0.8em) = figure(
   kind: "listing",
   supplement: [Листинг],
   numbering: "1",
   caption: caption,
   {
     set align(left) // figure центрирует содержимое по умолчанию — коду нужен левый край
-    set text(font: _mono, size: 0.8em)
+    set text(font: _mono, size: size)
     set par(justify: false, leading: 0.62em, spacing: 0.62em, first-line-indent: 0mm)
     set raw(align: left, tab-size: 4)
     show raw.line: it => if line-numbers {

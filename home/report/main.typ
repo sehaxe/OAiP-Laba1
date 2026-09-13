@@ -41,7 +41,9 @@
 
 #shot("/home/report/assets/term_task2.png", caption: [Результаты выполнения задания № 2])
 
-#flow("/home/2/scheme.png", caption: [Блок-схема программы к заданию № 2])
+#flow("/home/2/scheme.png", caption: [Блок-схема программы к заданию № 2 — лист 1])
+
+#flow("/home/2/scheme-2.png", caption: [Блок-схема программы к заданию № 2 — лист 2; соединители «А» и «Б» связывают листы])
 
 = Задание 3
 
