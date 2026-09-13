@@ -206,11 +206,9 @@
   set figure.caption(position: bottom, separator: [ – ])
   show figure: set align(center)
   show figure: set par(justify: false, first-line-indent: 0mm)
-  // картинка не разрывается между страницами и не отрывается от подписи
+  // ни картинка, ни код не разрываются между страницами: блок целиком
+  // уезжает на следующую страницу вместе с подписью
   show figure: set block(breakable: false)
-  // листинги кода продолжаются на следующей странице — как принято
-  // в отчётах; иначе длинный код оставляет полстраницы пустоты
-  show figure.where(kind: "listing"): set block(breakable: true)
   show figure: set block(above: 18pt, below: 18pt)
   show figure.where(kind: table): set figure.caption(position: top)
   show figure.where(kind: table): set align(left)
