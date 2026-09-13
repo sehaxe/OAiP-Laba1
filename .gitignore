@@ -2,3 +2,5 @@ home/*/main
 __pycache__/
 *.pyc
 - .venv/
+.bulba/
+home/2/scheme-2.png

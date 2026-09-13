@@ -1,15 +1,30 @@
 // ============================================================================
 // oaip.typ — шаблон отчёта по лабораторным работам по ОАиП (БГУИР)
 //
-// Концепция: «всё как в статье arXiv, только титульник другой».
-// Титульный лист — по образцу кафедры (Times, по центру), обязательный.
-// Всё тело документа свёрстано по конвенциям LaTeX article / arXiv:
-//   · шрифт Computer Modern (New Computer Modern), кегль 10pt, одинарный;
-//   · абзацы с втяжкой 1.5em, первый абзац после заголовка — без втяжки;
-//   · заголовки секций — жирные, крупнее текста, слева;
-//   · подписи «Рисунок 1: …» / «Листинг 1: …» мелко, как \small в LaTeX;
-//   · листинги как пакет listings: тонкая рамка (frame=single),
-//     номера строк слева серым, моноширинный Computer Modern Mono.
+// Оформление тела отчёта — по СТП 01–2024 БГУИР «Дипломные проекты (работы).
+// Общие требования» (требования разделов 2 и 3 распространяются и на отчёты
+// по лабораторным работам):
+//   · А4, поля: левое 30 мм, правое 15 мм, верхнее и нижнее 20 мм (п. 2.1.1);
+//   · Times New Roman 14 pt, межстрочный интервал 1,0 = 18 pt,
+//     абзацный отступ 1,25 см, выравнивание по ширине (п. 2.1.1);
+//   · заголовки полужирные без переносов и точки в конце (п. 2.2.5);
+//     нумерованные разделы «1 ЗАГОЛОВОК» — с абзацного отступа по левому
+//     краю, подразделы «1.1 Заголовок» — строчными (п. 2.1.1, 2.2.2,
+//     приложение Л); ненумерованные разделы (цель работы, введение,
+//     заключение, список использованных источников, приложения) —
+//     ПРОПИСНЫМИ по центру без отступа (п. 2.1.1); чтобы раздел был без
+//     номера: #heading(level: 1, numbering: none)[Название];
+//     вокруг заголовка — пробельная строка (п. 2.1.1, 2.2.6);
+//     каждый нумерованный раздел — с новой страницы (п. 2.2.6);
+//   · формулы — по центру отдельной строкой, номер в скобках у правого
+//     края (п. 2.4.3, 2.4.7), нумерация сквозная: $ x = 1 $;
+//   · номер страницы внизу справа; титульный лист входит в нумерацию,
+//     но номер на нём не ставится (п. 2.2.8);
+//   · подпись рисунка «Рисунок 1 – Название» под рисунком по центру,
+//     без точки в конце (п. 2.5.5); подпись таблицы «Таблица 1 – Заголовок»
+//     над таблицей слева (п. 2.6.2);
+//   · перечисления — с абзацного отступа и знака «тире» (п. 2.3.5).
+// Титульный лист — по образцу кафедры, обязательный.
 //
 // Использование:
 //   #import "../../template/oaip.typ": *
@@ -32,25 +47,23 @@
 // Пути к картинкам в shot()/flow()/flow-wide() — ОТ КОРНЯ ПРОЕКТА (со слэша),
 // сборка: typst compile --root <корень> report/main.typ
 //
-// Шрифты: New Computer Modern (тело) — свободная цифровая версия Computer
-// Modern; ставится из CTAN (fonts/newcomputermodern) в ~/.local/share/fonts.
-// Титульник — Liberation Serif (двойник Times New Roman; для Windows замените
-// на "Times New Roman"). Все шрифты встраиваются в PDF, при отсутствии
-// New Computer Modern тело откатывается на Liberation Serif.
+// Шрифты: основной — Times New Roman, на Linux подставляется Liberation Serif
+// (метрический двойник). Листинги — Courier New / Liberation Mono.
+// Все шрифты встраиваются в PDF.
 // ============================================================================
 
 // --- шрифты -----------------------------------------------------------------
 
-// Титульный лист (по образцу кафедры): Liberation Serif — метрический
-// двойник Times New Roman. Для Windows поменяйте на "Times New Roman".
-#let _serif-title = ("Liberation Serif", "Noto Serif")
-// Тело отчёта: Computer Modern, как в arXiv.
-#let _cm = ("New Computer Modern", "Liberation Serif", "Noto Serif")
-// Листинги: моноширинный Computer Modern.
-#let _mono = ("New Computer Modern Mono", "DejaVu Sans Mono", "Liberation Mono")
+#let _serif = ("Times New Roman", "Liberation Serif", "Noto Serif")
+#let _mono = ("Courier New", "Liberation Mono", "DejaVu Sans Mono")
 
-#let _ink = luma(20)          // основной текст
-#let _faint = rgb("#9a958c")  // номера строк
+// --- параметры СТП 01–2024 --------------------------------------------------
+
+// межстрочный интервал 1,0 = 18 pt при 14 pt (п. 2.1.1); leading Typst
+// отсчитывается поверх высоты строки шрифта (~1.11em), поэтому вычитаем её
+#let _line = 18pt - 1.11em
+#let _indent = 1.25cm          // абзацный отступ (п. 2.1.1)
+#let _gost-margin = (top: 20mm, bottom: 20mm, left: 30mm, right: 15mm)
 
 // --- главный show-rule ------------------------------------------------------
 
@@ -64,10 +77,7 @@
   teacher: "",
   city: "Минск",
   year: none,
-  goal: none,   // цель работы — сверстается как Abstract в статье
-  gost-captions: false, // true — подписи по ГОСТ «Рисунок 1 — …», false — «Рисунок 1: …» как в LaTeX
-  margin: (top: 25mm, bottom: 30mm, left: 25mm, right: 25mm), // как в article
-  size: 10pt,   // стандартный кегль arXiv (10pt article)
+  goal: none,   // цель работы — раздел «ЦЕЛЬ РАБОТЫ» после титульника
   it,
 ) = {
   set document(
@@ -75,18 +85,13 @@
     author: student,
   )
 
-  // --- страница: А4, номер внизу по центру (LaTeX \pagestyle{plain}) ---
-  set page(
-    width: 21cm,
-    height: 29.7cm,
-    margin: margin,
-    numbering: "1",
-    number-align: bottom + center,
-  )
+  // --- страница: А4, поля по СТП, номер внизу справа (п. 2.1.1, 2.2.8) ---
+  set page(width: 21cm, height: 29.7cm, margin: _gost-margin,
+    numbering: "1", number-align: bottom + right)
 
   // ======================= титульный лист (по образцу кафедры) ==============
   {
-    set text(font: _serif-title, size: 14pt, fill: _ink, lang: "ru")
+    set text(font: _serif, size: 14pt, lang: "ru")
     set page(numbering: none)
     set par(first-line-indent: 0mm, justify: false, spacing: 0em)
 
@@ -141,147 +146,127 @@
     pagebreak()
   }
 
-  // титульник считается страницей 1, но номер на нём не ставится
+  // титульник считается страницей 1, но номер на нём не ставится (п. 2.2.8)
   counter(page).update(2)
 
-  // ======================= тело: конвенции LaTeX article ====================
-  set text(font: _cm, size: size, fill: _ink, lang: "ru")
+  // ======================= тело по СТП 01–2024 ==============================
+  set text(font: _serif, size: 14pt, lang: "ru")
   set par(
-    justify: true,
-    leading: 0.65em,          // одинарный интервал
-    // spacing = leading: в LaTeX \parskip = 0, но \baselineskip держится
-    // и МЕЖДУ абзацами; если поставить 0, соседние абзацы слипаются плотнее,
-    // чем строки внутри одного абзаца
-    spacing: 0.65em,
-    first-line-indent: (amount: 1.5em, all: false), // как \parindent в LaTeX
+    justify: true,               // по ширине страницы (п. 2.1.1)
+    leading: _line,              // межстрочный интервал 18 pt
+    spacing: _line,              // без интервала между абзацами, как в Word
+    first-line-indent: (amount: _indent, all: true), // отступ у каждого абзаца
   )
 
-  // списки: LaTeX-овские itemize/enumerate
-  set list(indent: 1.5em, spacing: 0.55em, marker: ([-],))
-  set enum(indent: 1.5em, spacing: 0.55em, numbering: "1.")
+  // перечисления: тире с абзацного отступа (п. 2.3.5), нумерованные — «1)» (п. 2.3.8)
+  set list(indent: _indent, spacing: _line, marker: [–])
+  set enum(indent: _indent, spacing: _line, numbering: "1)")
   show list: set par(first-line-indent: 0mm)
   show enum: set par(first-line-indent: 0mm)
 
-  // заголовки секций: \section — жирный, крупнее текста, слева
-  set heading(numbering: none)
+  // заголовки: полужирные, без переносов и точки в конце (п. 2.2.5);
+  // нумерованные разделы — прописными с абзацного отступа по левому краю,
+  // подразделы — строчными (п. 2.1.1, 2.2.2, 2.2.5, приложение Л);
+  // ненумерованные разделы (СОДЕРЖАНИЕ, ВВЕДЕНИЕ, ЗАКЛЮЧЕНИЕ, СПИСОК
+  // ИСПОЛЬЗОВАННЫХ ИСТОЧНИКОВ, ПРИЛОЖЕНИЯ) — прописными по центру (п. 2.1.1);
+  // вокруг заголовка — пробельная строка (п. 2.2.6); каждый раздел —
+  // с новой страницы (п. 2.2.6)
+  set heading(numbering: "1")
+  // первый нумерованный раздел — без пейджбрейка (цель работы остаётся
+  // в начале страницы с ним), остальные — с новой (п. 2.2.6)
+  let _first-section = state("oaip-first-section", true)
   show heading: it => {
-    set text(weight: "bold", size: size + 4pt)  // \Large при 10pt ≈ 14.4pt
-    set par(justify: false, first-line-indent: 0mm, spacing: 0em)
-    v(18pt, weak: true)
-    it
-    v(8pt, weak: true)
+    set text(weight: "bold", hyphenate: false)
+    if it.level == 1 and it.numbering != none {
+      context {
+        if _first-section.get() { _first-section.update(false) } else { pagebreak(weak: true) }
+      }
+    }
+    let head = if it.numbering == none or it.level == 1 { upper(it.body) } else { it.body }
+    if it.numbering == none {
+      // ненумерованный раздел — по центру без абзацного отступа (п. 2.1.1)
+      block(width: 100%, above: 18pt, below: 18pt, breakable: false,
+        align(center, head))
+    } else {
+      // нумерованный — с абзацного отступа; вторые и последующие строки
+      // выравниваются по началу текста первой строки (п. 2.1.1, приложение Л)
+      block(width: 100%, above: 18pt, below: 18pt, breakable: false, {
+        set par(hanging-indent: _indent + 2em,
+          first-line-indent: (amount: _indent, all: false))
+        box(width: 2em, numbering(it.numbering, ..counter(heading).get()))
+        head
+      })
+    }
   }
 
-  // рисунки: подпись снизу, «Рисунок 1: …» (или ГОСТ «Рисунок 1 — …») мелким кеглем (\small)
-  set figure(supplement: [Рисунок], numbering: "1", gap: 16pt)
-  set figure.caption(separator: if gost-captions { [~—~] } else { [: ] })
-  show figure: set figure.caption(position: bottom)
-  show figure.caption: set text(size: 0.9em)
-  // при par(spacing: 0em) слабые отбивки вокруг figure схлопываются в ноль,
-  // поэтому после подписи — сильный (несхлопываемый) вертикальный зазор
-  show figure.caption: it => { it; v(10pt, weak: false) }
+  // формулы: отдельной строкой по центру, номер в скобках у правого края
+  // (п. 2.4.3, 2.4.7); допускается сквозная нумерация (п. 2.4.6)
+  set math.equation(numbering: "(1)", number-align: right)
+
+  // рисунки: подпись «Рисунок 1 – Название» снизу по центру, без точки
+  // (п. 2.5.5); таблицы: «Таблица 1 – Заголовок» сверху слева (п. 2.6.2);
+  // иллюстрация отделяется от текста и подписи пробельными строками
+  // (п. 2.5.3, приложение Н — подпись идёт сразу под рисунком)
+  set figure(supplement: [Рисунок], numbering: "1", gap: 8pt)
+  set figure.caption(position: bottom, separator: [ – ])
+  show figure: set align(center)
   show figure: set par(justify: false, first-line-indent: 0mm)
-  // длинные листинги разрываются между страницами…
-  show figure: set block(breakable: true)
-  // …а рисунки с картинками — нет: картинка не должна отрываться от подписи
-  show figure.where(kind: image): set block(breakable: false)
+  // картинка не разрывается между страницами и не отрывается от подписи
+  show figure: set block(breakable: false)
+  show figure: set block(above: 18pt, below: 18pt)
+  show figure.where(kind: table): set figure.caption(position: top)
+  show figure.where(kind: table): set align(left)
 
-  // ======================= титульный блок в стиле arXiv =====================
-  set par(first-line-indent: 0mm, justify: false, spacing: 0em)
-
-  line(length: 100%, stroke: 2pt + _ink)
-  v(4pt)
-  align(center)[
-    #block(text(weight: "medium", size: size + 5pt)[
-      Лабораторная работа #if lab != none [№ #lab].
-      #title
-    ])
-    #v(1em, weak: true)
-  ]
-  line(length: 100%, stroke: 2pt + _ink)
-
-  pad(top: 0.5em)[
-    #align(center)[
-      #text(size: size)[
-        #student, группа #group \
-        #if teacher != none [проверил: #teacher] \
-        #if variant != none [вариант #variant] \
-        #city, #year
-      ]
-    ]
-  ]
-
-  // --- цель работы — блок Abstract ---
+  // --- цель работы (ненумерованный раздел, как ВВЕДЕНИЕ/ЗАКЛЮЧЕНИЕ) ---
   if goal != none {
-    pad(x: 3em, top: 1em, bottom: 0.4em)[
-      #align(center)[
-        #heading(level: 1, outlined: false, numbering: none,
-          text(0.85em, upper[Цель работы]))
-      ]
-      #set par(justify: true, first-line-indent: 0mm, spacing: 0em)
-      #goal
-    ]
+    heading(level: 1, numbering: none, outlined: false)[Цель работы]
+    goal
   }
-
-  v(0.5em)
-  set par(first-line-indent: (amount: 1.5em, all: false), justify: true, spacing: 0.65em)
 
   it
 }
 
 // --- помощники для отчёта ---------------------------------------------------
 
-// Листинг в стиле пакета listings (frame=single, номера строк слева):
-// тонкая рамка, без заливки, моноширинный Computer Modern, подпись
-// «Листинг N: …» снизу мелким кеглем.
+// Листинг: моноширинный Courier с номерами строк, подпись
+// «Листинг N – …» снизу (рамки СТП не предусматривает).
 // source — строка с кодом (например, read("../1/main.c")).
 #let listing(source, caption: none, lang: "c", line-numbers: true) = figure(
   kind: "listing",
   supplement: [Листинг],
   numbering: "1",
   caption: caption,
-  // сильный v — вне рамки: при par(spacing: 0em) слабые отбивки схлопываются,
-  // и рамка листинга ложится на предшествующий текст
-  v(12pt, weak: false)
-  + block(
-    width: 100%,
-    stroke: 0.4pt + _ink,
-    inset: (x: 10pt, y: 8pt),
-    radius: 0pt,
-    {
-      set align(left) // figure центрирует содержимое по умолчанию — коду нужен левый край
-      set text(font: _mono, size: 0.85em)
-      set par(justify: false, leading: 0.62em, spacing: 0.62em, first-line-indent: 0mm)
-      set raw(align: left, tab-size: 4)
-      show raw.line: it => if line-numbers {
-        box(width: 1.9em, align(right, text(fill: _faint, str(it.number)))) + h(6pt) + it
-      } else {
-        it
-      }
-      raw(source, lang: lang)
-    },
-  ),
+  {
+    set align(left) // figure центрирует содержимое по умолчанию — коду нужен левый край
+    set text(font: _mono, size: 0.85em)
+    set par(justify: false, leading: 0.62em, spacing: 0.62em, first-line-indent: 0mm)
+    set raw(align: left, tab-size: 4)
+    show raw.line: it => if line-numbers {
+      box(width: 1.9em, align(right, str(it.number))) + h(6pt) + it
+    } else {
+      it
+    }
+    raw(source, lang: lang)
+  },
 )
 
-// Скриншот результата: по центру, подпись «Рисунок N: …» снизу.
+// Скриншот результата: по центру, подпись «Рисунок N – …» снизу.
 #let shot(path, caption: none, width: 88%) = figure(
   image(path, width: width),
   caption: caption,
 )
 
-// Блок-схема: белая картинка по центру, подпись «Рисунок N: …» снизу.
+// Блок-схема: белая картинка по центру, подпись «Рисунок N – …» снизу.
 #let flow(path, caption: none, width: 140mm) = figure(
   image(path, width: width),
   caption: caption,
 )
 
 // Широкая блок-схема (например, switch с 4–5 ветками): выносится на
-// отдельный АЛЬБОМНЫЙ лист — как sidewaysfigure в LaTeX, аналогично
-// ГОСТ-практике выноса больших схем; текст схемы печатается крупнее.
+// отдельный АЛЬБОМНЫЙ лист — разворот на 90° по часовой стрелке
+// разрешён п. 2.5.4 СТП.
 #let flow-wide(path, caption: none) = page(
   flipped: true,
-  numbering: "1",
-  number-align: bottom + center,
   {
     set align(center)
     v(1fr)
