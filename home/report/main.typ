@@ -41,8 +41,7 @@
 
 #shot("/home/report/assets/term_task2.png", caption: [Результаты выполнения задания № 2])
 
-#flow("/home/2/scheme.png", caption: [Блок-схема программы к заданию № 2 — лист 1])
-#flow("/home/2/scheme-2.png", caption: [Блок-схема программы к заданию № 2 — лист 2; соединители «А» и «Б» связывают листы])
+#flow("/home/2/scheme.png", caption: [Блок-схема программы к заданию № 2])
 
 = Задание 3
 
@@ -69,5 +68,5 @@
 
 #shot("/home/report/assets/term_task4.png", caption: [Результаты выполнения задания № 4])
 
-#flow("/home/4/scheme.png", caption: [Блок-схема программы к заданию № 4 — лист 1: меню и проверка ввода], width: 90mm)
-#flow-wide("/home/4/scheme-2.png", caption: [Блок-схема программы к заданию № 4 — лист 2: выбор сезона])
+#flow("/home/4/scheme.png", caption: [Блок-схема программы к заданию № 4 — лист 1: меню], width: 90mm)
+#flow-wide("/home/4/scheme-2.png", caption: [Блок-схема программы к заданию № 4 — лист 2: проверка ввода и выбор сезона])
