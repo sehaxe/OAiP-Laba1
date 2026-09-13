@@ -64,6 +64,8 @@
 #let _line = 18pt - 1.11em
 #let _indent = 1.25cm          // абзацный отступ (п. 2.1.1)
 #let _gost-margin = (top: 20mm, bottom: 20mm, left: 30mm, right: 15mm)
+#let scheme-scale = 0.05             // мм на пиксель PNG блок-схем:
+                                    // один масштаб на все схемы отчёта
 
 // --- главный show-rule ------------------------------------------------------
 
@@ -253,20 +255,50 @@
 )
 
 // Блок-схема: белая картинка по центру, подпись «Рисунок N – …» снизу.
-#let flow(path, caption: none, width: 140mm) = figure(
-  image(path, width: width),
+// --- схемы gostpadi: единый масштаб без ручных ширин -----------------------
+// gostpadi рисует пачку схем в одном масштабе (блоки одного типа во всех
+// схемах одного размера). PNG несёт размер в пикселях — читаем его из
+// заголовка и умножаем на scheme-scale (мм на пиксель, один параметр
+// на весь отчёт). Всё, что шире колонки, ужимается до неё.
+
+#let _png-px(path) = {
+  let b = read(path, encoding: none)
+  // PNG: 8 байт подписи, 4 длины, 4 "IHDR", затем ширина и высота (big-endian)
+  (
+    int.from-bytes(b.slice(16, 20), endian: "big"),
+    int.from-bytes(b.slice(20, 24), endian: "big"),
+  )
+}
+
+#let _text-width = 210mm - _gost-margin.left - _gost-margin.right   // 165 мм
+#let _land-width = 297mm - _gost-margin.left - _gost-margin.right  // 252 мм
+
+#let _fit-width(path, max) = {
+  let (wpx, _) = _png-px(path)
+  calc.min(wpx * scheme-scale * 1mm, max)
+}
+
+#let flow(path, caption: none, max: 100%) = figure(
+  // натуральный размер из DPI-метаданных PNG: gostpadi рисует пачку схем
+  // в одном масштабе, поэтому блоки во всех схемах отчёта — одного размера;
+  // всё, что шире колонки, ужимается до неё
+  image(path, width: _fit-width(path, _text-width * max)),
   caption: caption,
 )
 
-// Широкая блок-схема (например, switch с 4–5 ветками): выносится на
-// отдельный АЛЬБОМНЫЙ лист — разворот на 90° по часовой стрелке
-// разрешён п. 2.5.4 СТП.
+// Очень широкая схема (switch на много ветвей): альбомный лист — ГОСТ
+// разрешает выносить такие схемы; масштаб остаётся общим для пачки.
 #let flow-wide(path, caption: none) = page(
   flipped: true,
+  numbering: "1",
+  number-align: bottom + right,
   {
     set align(center)
     v(1fr)
-    figure(image(path, width: 98%), caption: caption)
+    figure(
+      image(path, width: _fit-width(path, _land-width * 0.98)),
+      caption: caption,
+    )
     v(1fr)
   },
 )

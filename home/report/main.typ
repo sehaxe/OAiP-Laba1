@@ -29,7 +29,7 @@
 
 #shot("/home/report/assets/term_task1.png", width: 100%, caption: [Результаты выполнения задания № 1])
 
-#flow("/home/1/scheme.png", width: 158mm, caption: [Блок-схема программы к заданию № 1])
+#flow("/home/report/assets/1-main.png", caption: [Блок-схема программы к заданию № 1])
 
 = Задание 2
 
@@ -41,9 +41,7 @@
 
 #shot("/home/report/assets/term_task2.png", caption: [Результаты выполнения задания № 2])
 
-#flow("/home/2/scheme.png", caption: [Блок-схема программы к заданию № 2 — лист 1])
-
-#flow("/home/2/scheme-2.png", caption: [Блок-схема программы к заданию № 2 — лист 2; соединители «А» и «Б» связывают листы])
+#flow("/home/report/assets/2-main.png", caption: [Блок-схема программы к заданию № 2])
 
 = Задание 3
 
@@ -55,10 +53,7 @@
 
 #shot("/home/report/assets/term_task3.png", caption: [Результаты выполнения задания № 3])
 
-#flow("/home/3/scheme.png", caption: [Блок-схема программы к заданию № 3 — лист 1])
-
-#flow("/home/3/scheme-2.png", caption: [Блок-схема программы к заданию № 3 — лист 2; соединители «А» и «Б» связывают листы])
-#flow("/home/3/scheme-3.png", width: 160mm, caption: [Блок-схема программы к заданию № 3 — лист 3])
+#flow("/home/report/assets/3-main.png", caption: [Блок-схема программы к заданию № 3])
 
 = Задание 4
 
@@ -70,5 +65,5 @@
 
 #shot("/home/report/assets/term_task4.png", caption: [Результаты выполнения задания № 4])
 
-#flow("/home/4/scheme.png", caption: [Блок-схема программы к заданию № 4 — лист 1: меню], width: 84mm)
-#flow-wide("/home/4/scheme-2.png", caption: [Блок-схема программы к заданию № 4 — лист 2: проверка ввода и выбор сезона])
+#flow("/home/report/assets/4-main.png", caption: [Блок-схема программы к заданию № 4 — лист 1: меню])
+#flow-wide("/home/report/assets/4-main-2.png", caption: [Блок-схема программы к заданию № 4 — лист 2: выбор сезона])
